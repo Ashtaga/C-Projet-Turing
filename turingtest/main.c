@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "program.h"
 #include "turing.h"
 
 int tete11=1;

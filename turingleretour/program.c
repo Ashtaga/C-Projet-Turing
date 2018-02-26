@@ -34,9 +34,8 @@ typedef struct
 	unsigned netats;       //nombre d'états utilisés
 	prline tab[NetatsMAX]; //lignes associées aux états
 }program;
-
 program PROG;  // Programme à simuler en représentation machine
-
+prline DEST;
 ///----------- déclarations des fonctions à compléter -------------------
 
 unsigned str2u(const char* s, unsigned char n);
@@ -112,7 +111,8 @@ int test_stop(unsigned etat)
 
 void printBin(unsigned val, int n)
 {
-	for(int i=1<<(n-1); i!=0; i=i>>1)
+	int i;
+	for(i=1<<(n-1); i!=0; i=i>>1)
 	{
 		printf("%d",!((val&i)==0));
 	}
@@ -121,11 +121,12 @@ void printBin(unsigned val, int n)
 void printProg(program* p)
 {
 	int n=p->netats;
+	int i, j;// erreur de compilation lorsqu'ils sont déclaré dans la boucle "program.c:125:2: error: ‘for’ loop initial declarations are only allowed in C99 or C11 mode"+++++++++++++++++
 	printf("Nombre d'etats : %d\n",n);
-	for(int i=0; i<n; i++)
+	for(i=0; i<n; i++)
 	{
 		printf("%02d : ",i);
-		for(int j=0; j<4; j++)
+		for(j=0; j<4; j++)
 		{
 			printBin(p->tab[i].action[j],13);
 			printf("  ");
@@ -157,9 +158,7 @@ unsigned str2u(const char* s, unsigned char n)
 	p=p*10;
 	}
 	return res;
-}
-	}
-}
+}	
 
 // décodage d'une chaîne représentant une action
 // Seuls les 8 premiers caractères sont pris en compte
@@ -167,7 +166,7 @@ unsigned str2u(const char* s, unsigned char n)
 // action à retourner pour cet exemple : 0b0000010101000
 unsigned decode(const char* code_action)
 {
-	str2u(s+1,3);
+	str2u(code_action,3);
 	
 }
 
@@ -176,10 +175,11 @@ unsigned decode(const char* code_action)
 // pointée par le paramètre p.
 void chargeProg(program* p)
 {
+	int i=0;
 	p->netats = 0;
-	for(int i=0; i<NDEMO; i++)
+	for(i=0; i<NDEMO; i++)
 	{
-		compileLigne(DEMO[i],/* A compléter */);
+		compileLigne(DEMO[i],(*p).tab+i);
 		p->netats++;
 	}
 }
@@ -190,5 +190,6 @@ void chargeProg(program* p)
 unsigned int lire_prog(unsigned int etat, unsigned char val_t1, unsigned char val_t2)
 {
     /// A compléter
+	
 }
 
