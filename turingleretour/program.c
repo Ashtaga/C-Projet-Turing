@@ -166,8 +166,13 @@ unsigned str2u(const char* s, unsigned char n)
 // action à retourner pour cet exemple : 0b0000010101000
 unsigned decode(const char* code_action)
 {
-	str2u(code_action,3);
-	
+	unsigned retour = 0b0;
+	retour = retour | (str2u(code_action +1, 2 )<<8);
+	retour = retour | (str2u(code_action+4,1)<<5);
+	retour = retour | (char2dir(code_action+5)<<4);
+	retour = retour | (str2u(code_action+6,1)<<3);
+	retour = retour | char2dir(code_action+7);
+	return retour;	
 }
 
 // traduction de la représentation humaine du programme située dans DEMO en
